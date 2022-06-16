@@ -1,0 +1,11 @@
+[GitHub] [{repo}] {user} {action} a discussion: {title}
+--
+GitHub user {user} {action} a discussion: {title}
+
+{body}
+
+GitHub link: {url}
+
+----
+This is an automatically sent email for {recipient}.
+To unsubscribe, please send an email to: {unsub}
