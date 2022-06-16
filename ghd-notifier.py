@@ -22,6 +22,7 @@ import requests
 import logging
 import yaml
 import os
+import uuid
 
 """GitHub Discussions Notifier"""
 
