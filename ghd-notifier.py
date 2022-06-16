@@ -87,7 +87,7 @@ def parse_comment_action(blob):
         recipient = get_recipient(repo)
         if recipient:
             unsub = recipient.replace("@", "-unsubscribe@")
-            subject, text = THREAD_ACTION.split("--", 1)
+            subject, text = COMMENT_ACTION.split("--", 1)
             subject = subject.format(**locals()).strip()
             text = text.format(**locals()).strip()
             asfpy.messaging.mail(
