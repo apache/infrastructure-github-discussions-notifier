@@ -1,0 +1,14 @@
+
+[Unit]
+Description=GitHub Discussions Notifier
+ 
+[Service]
+Type=simple
+WorkingDirectory=/opt/github-discussions-notifier
+ExecStart=/usr/local/bin/pipenv run python3 ghd-notifier.py
+Restart=always
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
