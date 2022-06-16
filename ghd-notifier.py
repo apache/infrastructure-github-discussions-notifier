@@ -51,6 +51,7 @@ def parse_thread_action(blob):
     url = discussion.get("html_url")
     body = discussion.get("body")
     repo = blob.get("repository").get("name")
+    node_id = discussion.get("node_id")
     if action in VALID_THREAD_ACTIONS:
         recipient = get_recipient(repo)
         if recipient:
@@ -58,8 +59,19 @@ def parse_thread_action(blob):
             subject, text = THREAD_ACTION.split("--", 1)
             subject = subject.format(**locals()).strip()
             text = text.format(**locals()).strip()
+            msg_headers = {}
+            msgid = "<ghd-%s-%s@gitbox.apache.org>" % (node_id, str(uuid.uuid4()))
+            msgid_OP = "<ghd-%s@gitbox.apache.org>" % node_id
+            if action == "created":
+                msgid = (
+                    msgid_OP  # This is the first email, make a deterministic message id
+                )
+            else:
+                msg_headers = {
+                    "In-Reply-To": msgid_OP
+                }  # Thread from the actual discussion parent
             asfpy.messaging.mail(
-                sender="GitBox <git@apache.org>", recipient=recipient, subject=subject, message=text
+                sender="GitBox <git@apache.org>", recipient=recipient, subject=subject, message=text, messageid=msgid, headers=msg_headers
             )
             return f"[send] {user} {action} {url}: {title}"
     return f"[skip] {user} {action} {url}: {title}"
@@ -77,6 +89,7 @@ def parse_comment_action(blob):
     body = comment.get("body")
     repo = blob.get("repository").get("name")
     action_human = "???"
+    node_id = discussion.get("node_id")
     if action == "created":
         action_human = "added a comment to the discussion:"
     elif action == "edited":
@@ -86,12 +99,17 @@ def parse_comment_action(blob):
     if action in VALID_COMMENT_ACTIONS:
         recipient = get_recipient(repo)
         if recipient:
+            msgid = "<ghd-%s-%s@gitbox.apache.org>" % (node_id, str(uuid.uuid4()))
+            msgid_OP = "<ghd-%s@gitbox.apache.org>" % node_id
             unsub = recipient.replace("@", "-unsubscribe@")
             subject, text = COMMENT_ACTION.split("--", 1)
             subject = subject.format(**locals()).strip()
             text = text.format(**locals()).strip()
+            msg_headers = {
+                    "In-Reply-To": msgid_OP
+                }  # Thread from the actual discussion parent
             asfpy.messaging.mail(
-                sender="GitBox <git@apache.org>", recipient=recipient, subject=subject, message=text
+                sender="GitBox <git@apache.org>", recipient=recipient, subject=subject, message=text, messageid=msgid, headers=msg_headers
             )
             return f"[send] [comment] {user} {action} {url}: {title}"
     return f"[skip] [comment] {user} {action} {url}: {title}"
