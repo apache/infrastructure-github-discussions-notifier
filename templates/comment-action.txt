@@ -1,7 +1,7 @@
 
-[GitHub] [{repo}] {user} {action} {title}
+[GitHub] [{repo}] {user} {action_human} {title}
 --
-GitHub user {user} {action} {title}
+GitHub user {user} {action_human} {title}
 
 {body}
 
