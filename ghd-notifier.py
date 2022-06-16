@@ -50,8 +50,9 @@ def parse_thread_action(blob):
     category = discussion.get("category").get("slug")
     url = discussion.get("html_url")
     body = discussion.get("body")
+    repo = blob.get("repository").get("name")
     if action in VALID_THREAD_ACTIONS:
-        recipient = get_recipient(blob.get("repository").get("name"))
+        recipient = get_recipient(repo)
         if recipient:
             unsub = recipient.replace("@", "-unsubscribe@")
             subject, text = THREAD_ACTION.split("--", 1)
@@ -74,6 +75,7 @@ def parse_comment_action(blob):
     category = discussion.get("category").get("slug")
     url = comment.get("html_url")
     body = comment.get("body")
+    repo = blob.get("repository").get("name")
     action_human = "???"
     if action == "created":
         action_human = "added a comment to the discussion:"
@@ -82,7 +84,7 @@ def parse_comment_action(blob):
     elif action == "deleted":
         action_human = "deleted a comment on the discussion:"
     if action in VALID_COMMENT_ACTIONS:
-        recipient = get_recipient(blob.get("repository").get("name"))
+        recipient = get_recipient(repo)
         if recipient:
             unsub = recipient.replace("@", "-unsubscribe@")
             subject, text = THREAD_ACTION.split("--", 1)
