@@ -11,6 +11,15 @@ To enable notifications for a repository, the `notifications` directive in .asf.
 notifications:
   commits: commits@foo.apache.org
   discussions: issues@foo.apache.org
+
+custom_subjects:
+    new_discussion: "Created: Discussion {repository}: {title}"
+    edit_discussion: "Edited: Discussion {repository}: {title}"
+    close_discussion: "Closed: Discussion {repository}: {title}"
+    close_discussion_with_comment: "Closed: Discussion with comment {repository}: {title}"
+    new_comment_discussion: "Commented: Discussion {repository}: {title}"
+    edit_comment_discussion: "Edited a comment: Discussion {repository}: {title}"
+    delete_comment_discussion: "Deleted a comment: Discussion {repository}: {title}"
   ~~~
 
 ## Possible Actions

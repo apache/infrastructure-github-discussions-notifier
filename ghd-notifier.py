@@ -85,20 +85,25 @@ def parse_thread_action(blob):
     if action in VALID_THREAD_ACTIONS:
         recipient = get_recipient(repository)
         if recipient:
-            # TODO: Improve this ...
-            real_action = "new_discussion"
-
             # The templates contain templates for the subject (first part)
             # and the content of the email (second part) ... split the template
             # up.
             subject, text = COMMENT_ACTION.split("--", 1)
 
+            # Define the name of the template for this action.
+            action_name = "new_discussion"
+            if action == "created":
+                action_name = "new_discussion"
+            elif action == "edited":
+                action_name = "edit_discussion"
+            elif action == "closed":
+                action_name = "close_discussion"
             # Note: the subjects are checked for validity in
             # https://github.com/apache/infrastructure-p6/blob/production/modules/gitbox/files/asfgit/package/asfyaml.py
             # See VALID_GITHUB_SUBJECT_VARIABLES and validate_github_subject()
             # The variable names listed in VALID_GITHUB_SUBJECT_VARIABLES must be defined
             # here as local variables
-            custom_subject_line = get_custom_subject(repository, real_action)  # Custom subject line?
+            custom_subject_line = get_custom_subject(repository, action_name)  # Custom subject line?
             try:
                 # If a custom subject line was defined, use that ...
                 if custom_subject_line:
@@ -157,18 +162,19 @@ def parse_comment_action(blob):
     # "closed" that the user closed with a comment.
     if action == "created" and discussion_state == "closed":
         action_human = "closed the discussion with a comment:"
+        action_name = "close_discussion_with_comment"
     elif action == "created":
         action_human = "added a comment to the discussion:"
+        action_name = "new_comment_discussion"
     elif action == "edited":
         action_human = "edited a comment on the discussion:"
+        action_name = "edit_comment_discussion"
     elif action == "deleted":
         action_human = "deleted a comment on the discussion:"
+        action_name = "delete_comment_discussion"
     if action in VALID_COMMENT_ACTIONS:
         recipient = get_recipient(repository)
         if recipient:
-            # TODO: Improve this ...
-            real_action = "comment_discussion"
-
             # The templates contain templates for the subject (first part)
             # and the content of the email (second part) ... split the template
             # up.
@@ -179,7 +185,7 @@ def parse_comment_action(blob):
             # See VALID_GITHUB_SUBJECT_VARIABLES and validate_github_subject()
             # The variable names listed in VALID_GITHUB_SUBJECT_VARIABLES must be defined
             # here as local variables
-            custom_subject_line = get_custom_subject(repository, real_action)  # Custom subject line?
+            custom_subject_line = get_custom_subject(repository, action_name)  # Custom subject line?
             try:
                 # If a custom subject line was defined, use that ...
                 if custom_subject_line:
