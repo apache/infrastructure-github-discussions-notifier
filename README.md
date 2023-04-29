@@ -17,6 +17,7 @@ custom_subjects:
     edit_discussion: "Edited: Discussion {repository}: {title}"
     close_discussion: "Closed: Discussion {repository}: {title}"
     close_discussion_with_comment: "Closed: Discussion with comment {repository}: {title}"
+    reopen_discussion: "Reopened: Discussion {repository}: {title}"
     new_comment_discussion: "Commented: Discussion {repository}: {title}"
     edit_comment_discussion: "Edited a comment: Discussion {repository}: {title}"
     delete_comment_discussion: "Deleted a comment: Discussion {repository}: {title}"

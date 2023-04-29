@@ -27,9 +27,9 @@ import uuid
 
 """GitHub Discussions Notifier"""
 
-REPO_ROOT = "/x1/repos/asf"
-GHSETTINGS_ROOT = "/x1/asfyaml"
-VALID_THREAD_ACTIONS = ["created", "edited", "deleted"]
+REPO_ROOT = ""#"/x1/repos/asf" TODO: Comment back in
+GHSETTINGS_ROOT = ""#"/x1/asfyaml" TODO: Comment back in
+VALID_THREAD_ACTIONS = ["created", "edited", "closed", "reopened"]
 VALID_COMMENT_ACTIONS = ["created", "edited", "deleted"]
 THREAD_ACTION = open("templates/thread-action.txt").read()
 COMMENT_ACTION = open("templates/comment-action.txt").read()
@@ -37,17 +37,6 @@ COMMENT_ACTION = open("templates/comment-action.txt").read()
 
 def get_custom_subject(repository, action="catchall"):
     """Gets a subject template for a specific action, if specified via .asf.yaml"""
-    # Rewrite some unintuitively named github actions to more human friendly ones.
-    action_map = {
-        "created_issue": "comment_issue",
-        "created_pr": "comment_pr",
-        "diffcomment_collated_pr": "diffcomment",
-        "open_issue": "new_issue",
-        "open_pr": "new_pr",
-    }
-    if action in action_map:
-        action = action_map[action]
-
     gh_settings_path = os.path.join(GHSETTINGS_ROOT, f"ghsettings.{repository}.yml")  # Path to github settings yaml file
     if os.path.isfile(gh_settings_path):
         try:
@@ -88,7 +77,7 @@ def parse_thread_action(blob):
             # The templates contain templates for the subject (first part)
             # and the content of the email (second part) ... split the template
             # up.
-            subject, text = COMMENT_ACTION.split("--", 1)
+            subject, text = THREAD_ACTION.split("--", 1)
 
             # Define the name of the template for this action.
             action_name = "new_discussion"
@@ -98,6 +87,8 @@ def parse_thread_action(blob):
                 action_name = "edit_discussion"
             elif action == "closed":
                 action_name = "close_discussion"
+            elif action == "reopened":
+                action_name = "reopen_discussion"
             # Note: the subjects are checked for validity in
             # https://github.com/apache/infrastructure-p6/blob/production/modules/gitbox/files/asfgit/package/asfyaml.py
             # See VALID_GITHUB_SUBJECT_VARIABLES and validate_github_subject()
@@ -116,8 +107,6 @@ def parse_thread_action(blob):
                 return
 
             unsub = recipient.replace("@", "-unsubscribe@")
-            subject, text = THREAD_ACTION.split("--", 1)
-            subject = subject.format(**locals()).strip()
             text = text.format(**locals()).strip()
             msg_headers = {}
             msgid = "<ghd-%s-%s@gitbox.apache.org>" % (node_id, str(uuid.uuid4()))
@@ -239,7 +228,6 @@ def main():
 
         # Process the incoming message.
         content = flask.request.json
-        act = content.get("action")
         # GitHub Discussion notifications are all expected to have a "discussion" element.
         if "discussion" in content:
             # If this is a comment action, it will also contain a "comment" element
