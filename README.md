@@ -12,4 +12,37 @@ notifications:
   commits: commits@foo.apache.org
   discussions: issues@foo.apache.org
   ~~~
+
+## Possible Actions
+
+The different actions I identified and how to detect them:
+
+- Discussion Created:
+  - Action: "created"
+  - No "comment" element
+- Discussion Edited:
+  - Action: "edited"
+  - No "comment" element
+- Discussion Closed without comment:
+  - Action: "closed"
+  - No "comment" element
+- Discussion Closed with comment:
+  - Action: "created"
+  - Existing "comment" element
+  - Discussion/State: "closed"
+- Comment Added:
+  - Action: "created"
+  - Existing "comment" element
+  - Discussion/State: "open"
+- Comment Edited:
+  - Action: "edited"
+  - Existing "comment" element
+  - Discussion/State: "open"
+- Comment Deleted:
+  - Action: "deleted"
+  - Existing "comment" element
+  - Discussion/State: "open"
+
+NOTE: Problem is, that it seems impossible to distinguish between someone adding a comment to a closed discussion and someone closing a discussion with a comment.
+For simplicity reasons, we'll assume that if a comment is added and the discussion state is "closed", that this is someone closing a discussion with a comment.
   
