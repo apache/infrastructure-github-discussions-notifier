@@ -27,8 +27,8 @@ import uuid
 
 """GitHub Discussions Notifier"""
 
-REPO_ROOT = ""#"/x1/repos/asf" TODO: Comment back in
-GHSETTINGS_ROOT = ""#"/x1/asfyaml" TODO: Comment back in
+REPO_ROOT = "/x1/repos/asf"
+GHSETTINGS_ROOT = "/x1/asfyaml"
 VALID_THREAD_ACTIONS = ["created", "edited", "closed", "reopened"]
 VALID_COMMENT_ACTIONS = ["created", "edited", "deleted"]
 THREAD_ACTION = open("templates/thread-action.txt").read()
