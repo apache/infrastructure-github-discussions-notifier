@@ -47,8 +47,8 @@ def get_custom_subject(repository, action="catchall"):
         if custom_subjects and isinstance(custom_subjects, dict):
             if action in custom_subjects:
                 return custom_subjects[action]
-            elif "catchall" in custom_subjects:  # If no custom subject exists for this action, but catchall does...
-                return custom_subjects["catchall"]
+            elif "catchall_discussions" in custom_subjects:  # If no custom subject exists for this action, but catchall does...
+                return custom_subjects["catchall_discussions"]
 
 
 def get_recipient(repo):
