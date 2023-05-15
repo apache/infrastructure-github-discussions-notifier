@@ -1,5 +1,4 @@
-
-[GitHub] [{repo}] {user} {action_human} {title}
+[GitHub] [{repository}] {user} {action_human} {title}
 --
 GitHub user {user} {action_human} {title}
 
