@@ -102,6 +102,9 @@ def parse_thread_action(blob):
                 # Otherwise use the default one, which is located in the title of the template.
                 else:
                     subject = subject.format(**locals()).strip()
+                    # Small "hack" to add a prefix of "Re: " to everything that's not creating a new discussion.
+                    if action_name != "new_discussion"
+                        subject = "Re: " + subject
             except (KeyError, ValueError) as e:  # Template breakage can happen, ignore
                 print(e)
                 return
