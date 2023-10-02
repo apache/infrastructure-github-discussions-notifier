@@ -1,4 +1,4 @@
-[GitHub] [{repository}] {user} {action} a discussion: {title}
+[D] {title} [{repository}]
 --
 GitHub user {user} {action} a discussion: {title}
 

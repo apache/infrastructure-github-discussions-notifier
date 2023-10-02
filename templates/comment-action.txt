@@ -1,4 +1,4 @@
-[GitHub] [{repository}] {user} {action_human} {title}
+Re: [D] {title} [{repository}]
 --
 GitHub user {user} {action_human} {title}
 
