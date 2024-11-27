@@ -57,7 +57,7 @@ def get_recipient(repo):
     if not os.path.exists(yaml_path):  # Try private repo root if not found
         for r,d,f in os.walk(PRIVATE_ROOT): 
             for xrepo in d: 
-                if xrepo == f"{repo}.git"
+                if xrepo == f"{repo}.git":
                      yaml_path = os.path.join(r, xrepo, "notifications.yaml")
     if os.path.exists(yaml_path)
         yml = yaml.safe_load(open(yaml_path, "r").read())
