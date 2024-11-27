@@ -59,7 +59,7 @@ def get_recipient(repo):
             for xrepo in d: 
                 if xrepo == f"{repo}.git":
                      yaml_path = os.path.join(r, xrepo, "notifications.yaml")
-    if os.path.exists(yaml_path)
+    if os.path.exists(yaml_path):
         yml = yaml.safe_load(open(yaml_path, "r").read())
         if "discussions" in yml:
             return yml["discussions"]
