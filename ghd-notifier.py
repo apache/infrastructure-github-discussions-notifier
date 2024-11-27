@@ -28,6 +28,7 @@ import uuid
 """GitHub Discussions Notifier"""
 
 REPO_ROOT = "/x1/repos/asf"
+PRIVATE_ROOT = "/x1/repos/private"
 GHSETTINGS_ROOT = "/x1/asfyaml"
 VALID_THREAD_ACTIONS = ["created", "edited", "closed", "reopened"]
 VALID_COMMENT_ACTIONS = ["created", "edited", "deleted"]
@@ -53,7 +54,12 @@ def get_custom_subject(repository, action="catchall"):
 
 def get_recipient(repo):
     yaml_path = os.path.join(REPO_ROOT, f"{repo}.git", "notifications.yaml")
-    if os.path.exists(yaml_path):
+    if not os.path.exists(yaml_path):  # Try private repo root if not found
+        for r,d,f in os.walk(PRIVATE_ROOT): 
+            for xrepo in d: 
+                if xrepo == f"{repo}.git"
+                     yaml_path = os.path.join(r, xrepo, "notifications.yaml")
+    if os.path.exists(yaml_path)
         yml = yaml.safe_load(open(yaml_path, "r").read())
         if "discussions" in yml:
             return yml["discussions"]
